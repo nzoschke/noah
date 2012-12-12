@@ -1,0 +1,123 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Pages by nzoschke</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">Pages</h1>
+        <p class="header">Generate Markdown for GitHub Pages </p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/nzoschke/pages/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/nzoschke/pages/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/nzoschke/pages">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/nzoschke">nzoschke</a></p>
+
+
+      </header>
+      <section><div id="readme"><article class="markdown-body"><h1>Runtime Profile Scripts</h1>
+
+<p>Recently, the Heroku Runtime introduced a change in how we run your code:</p>
+
+<div class="highlight"><pre><span class="gd">-  execlp("bash", "bash", "-c", command, (char *) NULL))</span>
+<span class="gi">+  execlp("bash", "bash", "--login", "-c", command, (char *) NULL))</span>
+</pre></div>
+
+<p>The introduction of a "login shell" brings us one step closer to the vision of the Heroku Runtime: </p>
+
+<blockquote>
+<p>The Heroku Runtime operates a platform for dynamic execution of arbitrary code in a secure and scalable multi-tenant environment.</p>
+</blockquote>
+
+<p>By running all dynos as a login shell, we improved the flexibility of the platform with a classic Unix primitive: profile scripts.</p>
+
+<p>As the <a href="http://www.gnu.org/software/bash/manual/bashref.html#Bash-Startup-Files">Bash Reference Manual explains</a>, a login shell automatically sources /etc/profile then ~/.profile before executing the command. These scripts offer hooks to control the execution environment.</p>
+
+<p>In a terminal, profile scripts customize the command prompt, append to $PATH for a package manager, etc.</p>
+
+<p>On the platform, profile scripts influence the contract between the Heroku Runtime and your code:</p>
+
+<pre><code>Heroku Runtime sets $HOME and $PORT
+Heroku Runtime sets values from `heroku config`
+Heroku Runtime executes login shell 
+Login shell sources /etc/profile, which sources $HOME/.profile.d/*
+Login shell sources $HOME/.profile
+Login shell executes command
+</code></pre>
+
+<h3>Buildpacks</h3>
+
+<p>The most immediate use of profile scripts on Heroku is for <a href="https://devcenter.heroku.com/articles/buildpacks">buildpacks</a>, which should now add <a href="https://devcenter.heroku.com/articles/labs-dot-profile-d">.profile.d/</a> scripts:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>heroku run <span class="s2">"cat .profile.d/ruby.sh"</span>
+Running <span class="sb">`</span>cat .profile.d/ruby.sh<span class="sb">`</span> attached to terminal... up, run.1
+<span class="nb">export </span><span class="nv">GEM_PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">GEM_PATH</span><span class="k">:-</span><span class="nv">$HOME</span><span class="p">/vendor/bundle/ruby/1.9.1</span><span class="k">}</span>
+<span class="nb">export </span><span class="nv">LANG</span><span class="o">=</span><span class="k">${</span><span class="nv">LANG</span><span class="k">:-</span><span class="nv">en_US</span><span class="p">.UTF-8</span><span class="k">}</span>
+<span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="s2">"$HOME/bin:$HOME/vendor/bundle/ruby/1.9.1/bin:$PATH"</span>
+<span class="nb">export </span><span class="nv">RACK_ENV</span><span class="o">=</span><span class="k">${</span><span class="nv">RACK_ENV</span><span class="k">:-</span><span class="nv">production</span><span class="k">}</span>
+</pre></div>
+
+<p>This script fills in the environment that the Ruby needs for Bundler and Rails, but honors any settings in <code>heroku config</code>.</p>
+
+<p>Previously, buildpacks altered <code>heroku config</code> to set the expected environment:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>heroku config
+GEM_PATH: vendor/bundle/ruby/1.9.1
+LANG:     en_US.UTF-8
+PATH:     bin:vendor/bundle/ruby/1.9.1/bin:/usr/local/bin:/usr/bin:/bin
+RACK_ENV: production
+</pre></div>
+
+<p>Although this worked, it was a leaky abstraction. <code>heroku config</code> is intended for app config and secrets like DATABASE_URL, not static settings for a buildpack. Here, <code>heroku config:remove PATH</code> breaks the app.</p>
+
+<h3>Your App</h3>
+
+<p>A .profile script may also prove useful to your application.</p>
+
+<p>For example, you can use one to set up the ~/.ssh/ directory in every dyno to use SSH private and public key contents from <code>heroku config</code>:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>cat .profile
+<span class="c">#!/bin/bash</span>
+
+<span class="nb">echo</span> <span class="s2">"setting up ~/.ssh via .profile"</span>
+mkdir -p <span class="nv">$HOME</span>/.ssh
+
+cat &gt;<span class="nv">$HOME</span>/.ssh/config <span class="s">&lt;&lt;EOF</span>
+<span class="s">StrictHostKeyChecking no</span>
+<span class="s">EOF</span>
+
+<span class="o">[</span> -n <span class="s2">"$SSH_PRIVATE_KEY"</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"$SSH_PRIVATE_KEY"</span> &gt;<span class="nv">$HOME</span>/.ssh/id_rsa
+<span class="o">[</span> -n <span class="s2">"$SSH_PUBLIC_KEY"</span> <span class="o">]</span>  <span class="o">&amp;&amp;</span> <span class="nb">echo</span> <span class="s2">"$SSH_PUBLIC_KEY"</span>  &gt;<span class="nv">$HOME</span>/.ssh/id_rsa.pub
+</pre></div>
+
+<p>Now <code>heroku run "git clone git@github.com:username/private-repo.git"</code> works.</p>
+
+<p>A dyno is always a container you fully control. With login shell and profile scripts you have an additional Unix-y way of setting up the environment.</p>
+
+<p>Heroku believes that profile scripts are a common pattern for any application, both installed by a buildpack and used for custom application logic.</p>
+
+<p>This feature should excite intrepid Unix fans. If this is you, <a href="http://heroku.theresumator.com/apply/W4eur1/Systems-Engineer.html">the Heroku Runtime is hiring engineers</a> to help run billions of shells.</p>
+
+<p>-Noah</p></article></div></section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
