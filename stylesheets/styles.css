@@ -411,3 +411,8 @@ footer {
     color:#444;
   }
 }
+
+/* Customizations */
+
+h3.index:not(:first-child) { margin-top: 0px; }
+h3.index span { display: inline-block; width: 100px; }
