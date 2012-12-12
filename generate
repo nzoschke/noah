@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+require "erb"
+require "tmpdir"
+
+TMP_DIR  = Dir.mktmpdir
+at_exit { `rm -rf #{TMP_DIR}` }
+
+# Create gh-pages branch
+system <<EOF
+  git show-ref --verify --quiet refs/heads/gh-pages || {
+    echo "* Creating gh-pages branch from pages/gh-pages"
+    git fetch pages
+    git branch --no-track gh-pages pages/gh-pages
+  }
+EOF
+
+# Create ERB template from index
+erb = `git show gh-pages:index.html`
+erb.gsub! /(<section>)(.*)(<\/section>)/m, '\1<div id="readme"><article class="markdown-body"><%= body %></article></div>\3'
+
+# Generate HTML and index
+puts "* Generating HTML"
+
+html  = {}
+index = {}
+
+Dir["*.md"].each do |md|
+  p = File.basename(md, File.extname(md)) + ".html"
+  html[p] = `curl --data-urlencode text@#{md} -s -X POST https://gist.github.com/preview`
+
+  if m = md.match(/([0-9-]{10})-([^.]+)/)
+    index[p] = [m[1], m[2].split("-").map(&:capitalize).join(" ")]
+  end
+end
+
+html["index.html"] = ""
+index.sort { |a,b| b[1] <=>a [1] }.each do |p,t|
+  html["index.html"] += "<h2><span>#{t[0]}</span><a href=\"#{p}\">#{t[1]}</a></h2>\n"
+end
+
+html.each do |p, body|
+  File.open(File.join(TMP_DIR, p), "w") { |f| f.write ERB.new(erb).result(binding) }
+end
+
+# Update gh-pages branch
+system <<EOF
+  echo "* Committing HTML to gh-pages branch"
+  (
+    git checkout gh-pages
+    git rm *.html
+    cp #{TMP_DIR}/* .
+    git add -v *.html
+    git commit -m "html"
+    git checkout master
+  ) 2>&1 | sed "s/^/    /"
+EOF
+
+puts "* Pending publish with `git push origin gh-pages`"
