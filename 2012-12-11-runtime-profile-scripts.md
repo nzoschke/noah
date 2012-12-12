@@ -9,7 +9,7 @@ Recently, the Heroku Runtime introduced a change in how we run your code:
 
 The introduction of a "login shell" brings us one step closer to the vision of the Heroku Runtime: 
 
-> The Heroku Runtime operates a platform for dynamic execution of arbitrary code in a secure and scalable multi-tenant environment.
+> The Heroku Runtime operates a robust, secure, highly dynamic and massively scalable multi-tenant execution platform.
 
 By running all dynos as a login shell, we improved the flexibility of the platform with a classic Unix primitive: profile scripts.
 
