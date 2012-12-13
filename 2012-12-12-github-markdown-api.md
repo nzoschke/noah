@@ -14,11 +14,11 @@ curl --data text="# GitHub Markdown API" -s -X POST https://gist.github.com/prev
 Of course, cURL lets us send data from a file or URL:
 
 ```bash
-curl --data text@2012-12-12-github-markdown-api.md -s -X POST https://gist.github.com/preview
+curl --data-urlencode text@2012-12-12-github-markdown-api.md -s -X POST https://gist.github.com/preview
 <h1>GitHub Markdown API</h1>
 ...
 
-curl https://raw.github.com/nzoschke/noah/master/2012-12-12-github-markdown-api.md | \
+curl -s https://raw.github.com/nzoschke/noah/master/2012-12-12-github-markdown-api.md | \
   curl --data-urlencode text@- -s -X POST https://gist.github.com/preview
 <h1>GitHub Markdown API</h1>
 ...
