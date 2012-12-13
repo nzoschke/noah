@@ -1,8 +1,6 @@
 # GitHub Markdown API
 
-I find GitHub Flavored Markdown rendering very confusing. What library renders
-content exactly the same as GitHub renders Readme.md? And what if I need to
-render markdown in Python, etc.?
+I find GitHub Flavored Markdown rendering very confusing. What library renders content exactly the same as GitHub renders Readme.md? And what if I need to render markdown in Python, etc.?
 
 Better to use GitHub's managed service for rendering Markdown.
 
