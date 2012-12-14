@@ -366,3 +366,33 @@ color:#00F;
 color:#A31515;
 }
 
+
+@font-face {
+font-family:'Octicons Regular';
+src:url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-ec0c1fa944612b7db2003d32ce67cceec5c08b2e.eot");
+src:url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-ec0c1fa944612b7db2003d32ce67cceec5c08b2e.eot#iefix") format("embedded-opentype"), url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-729fd26aef7d925c631f0605144933462cea3af1.woff") format("woff"), url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-fbe65346972149a8d8696e647af90bdd8f6d9a75.ttf") format("truetype"), url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-4cfac6c47d082f5408b0fb7f449e872135f44d08.svg#newFontRegular") format("svg");
+}
+
+.mini-icon,.mega-icon {
+font-family:'Octicons Regular';
+font-weight:400;
+font-style:normal;
+display:inline-block;
+-webkit-font-smoothing:antialiased;
+line-height:1;
+text-decoration:none;
+}
+
+.mini-icon {
+font-size:16px;
+width:16px;
+height:16px;
+}
+
+.mini-icon-link:before {
+content:"\f05c";
+}
+
+.is-default .drag-and-drop .default,.is-uploading .drag-and-drop .loading,.is-bad-file .drag-and-drop .bad-file,.is-failed .drag-and-drop .failed-request,.tabnav .tabnav-tabs,.tabnav .tabnav-tabs>li,.tabnav-widget.search .fieldwrap>input,.tabnav-widget.search .fieldwrap>button,ul.color-label-list .color-label.selected .mini-icon-remove-close,.markdown-body h1:hover a.anchor .mini-icon-link,.markdown-body h2:hover a.anchor .mini-icon-link,.markdown-body h3:hover a.anchor .mini-icon-link,.markdown-body h4:hover a.anchor .mini-icon-link,.markdown-body h5:hover a.anchor .mini-icon-link,.markdown-body h6:hover a.anchor .mini-icon-link,.markdown-body li p.first,a.button.classy,.watch-button-container .watch-button,.watch-button-container.on .unwatch-button,.starring-container .unstarred,.starring-container.on .starred,.user-following-container .follow,.user-following-container.on .unfollow,.chromed-list-browser .actions .context-menu-container,.commits-condensed span.gravatar a,.news .alert .simple .time,.issues-list-actions .context-menu-container,.select-menu-tabs .select-menu-tab {
+display:inline-block;
+}
