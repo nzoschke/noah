@@ -43,7 +43,41 @@
 
 
       </header>
-      <section><div id="readme"><article class="markdown-body"></article></div></section>
+      <section><div id="readme"><article class="markdown-body"><h1>
+<a name="github-markdown-api" class="anchor" href="#github-markdown-api"><span class="mini-icon mini-icon-link"></span></a>GitHub Markdown API</h1>
+
+<p><em>Updated on 12/14 to use the <a href="http://developer.github.com/v3/markdown/">documented markdown API</a> instead of the Gist preview service.</em></p>
+
+<p>I find GitHub Flavored Markdown rendering very confusing. What library renders content exactly the same as GitHub renders Readme.md? And what if I need to render markdown in Python, etc.?</p>
+
+<p>Better to use GitHub's managed service for rendering Markdown:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>curl --data <span class="s1">'{"text": "# GitHub Markdown API"}'</span> https://api.github.com/markdown
+&lt;h1&gt;
+&lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">"github-markdown-api"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"anchor"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"#github-markdown-api"</span>&gt;&lt;span <span class="nv">class</span><span class="o">=</span><span class="s2">"mini-icon mini-icon-link"</span>&gt;&lt;/span&gt;&lt;/a&gt;GitHub Markdown API&lt;/h1&gt;
+</pre></div>
+
+<p>There is also a "raw mode" (not JSON based) that is easier for shell integration:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>curl --data <span class="s2">"# GitHub Markdown API"</span> -H <span class="s2">"Content-Type:text/plain"</span> -s https://api.github.com/markdown/raw
+&lt;h1&gt;
+&lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">"github-markdown-api"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"anchor"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"#github-markdown-api"</span>&gt;&lt;span <span class="nv">class</span><span class="o">=</span><span class="s2">"mini-icon mini-icon-link"</span>&gt;&lt;/span&gt;&lt;/a&gt;GitHub Markdown API&lt;/h1&gt;
+</pre></div>
+
+<p>Of course, cURL lets us send data from a file or URL:</p>
+
+<div class="highlight"><pre><span class="nv">$ </span>curl --data-binary @2012-12-12-github-markdown-api.md -H <span class="s2">"Content-Type:text/plain"</span> -s https://api.github.com/markdown/raw
+&lt;h1&gt;
+&lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">"github-markdown-api"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"anchor"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"#github-markdown-api"</span>&gt;&lt;span <span class="nv">class</span><span class="o">=</span><span class="s2">"mini-icon mini-icon-link"</span>&gt;&lt;/span&gt;&lt;/a&gt;GitHub Markdown API&lt;/h1&gt;
+...
+
+<span class="nv">$ </span>curl -s https://raw.github.com/nzoschke/noah/master/2012-12-12-github-markdown-api.md | <span class="se">\</span>
+    curl --data-binary @- -H <span class="s2">"Content-Type:text/plain"</span> -s https://api.github.com/markdown/raw
+&lt;h1&gt;
+&lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">"github-markdown-api"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"anchor"</span> <span class="nv">href</span><span class="o">=</span><span class="s2">"#github-markdown-api"</span>&gt;&lt;span <span class="nv">class</span><span class="o">=</span><span class="s2">"mini-icon mini-icon-link"</span>&gt;&lt;/span&gt;&lt;/a&gt;GitHub Markdown API&lt;/h1&gt;...
+</pre></div>
+
+<p>-Noah</p></article></div></section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
