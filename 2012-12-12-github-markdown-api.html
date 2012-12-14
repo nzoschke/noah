@@ -43,29 +43,7 @@
 
 
       </header>
-      <section><div id="readme"><article class="markdown-body"><h1>GitHub Markdown API</h1>
-
-<p>I find GitHub Flavored Markdown rendering very confusing. What library renders content exactly the same as GitHub renders Readme.md? And what if I need to render markdown in Python, etc.?</p>
-
-<p>Better to use GitHub's managed service for rendering Markdown.</p>
-
-<div class="highlight"><pre><span class="nv">$ </span>curl --data <span class="nv">text</span><span class="o">=</span><span class="s2">"# GitHub Markdown API"</span> -s https://gist.github.com/preview
-&lt;h1&gt;GitHub Markdown API&lt;/h1&gt;
-</pre></div>
-
-<p>Of course, cURL lets us send data from a file or URL:</p>
-
-<div class="highlight"><pre><span class="nv">$ </span>curl --data-urlencode text@2012-12-12-github-markdown-api.md -s https://gist.github.com/preview
-&lt;h1&gt;GitHub Markdown API&lt;/h1&gt;
-...
-
-<span class="nv">$ </span>curl -s https://raw.github.com/nzoschke/noah/master/2012-12-12-github-markdown-api.md | <span class="se">\</span>
-    curl --data-urlencode text@- -s https://gist.github.com/preview
-&lt;h1&gt;GitHub Markdown API&lt;/h1&gt;
-...
-</pre></div>
-
-<p>-Noah</p></article></div></section>
+      <section><div id="readme"><article class="markdown-body"></article></div></section>
       <footer>
         <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
