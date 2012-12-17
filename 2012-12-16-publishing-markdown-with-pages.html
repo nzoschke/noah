@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Noah - A Development Journal</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-12126878-2']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <a href="/" style="text-decoration: none;">
+          <h1 class="header">Noah</h1>
+          <p class="header">A Development Journal</p>
+        </a>
+
+        <ul>
+          <li><a class="buttons github" href="https://github.com/nzoschke/noah">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/nzoschke">nzoschke</a></p>
+      </header>
+
+      <section><div id="readme"><article class="markdown-body"><h1>
+<a name="publishing-markdown-with-pages" class="anchor" href="#publishing-markdown-with-pages"><span class="mini-icon mini-icon-link"></span></a>Publishing Markdown with Pages</h1>
+
+<p>Recently I've resumed tech writing.</p>
+
+<p>When you start a new blog there is always a need to choose writing and publishing tools. The most common and popular tools -- <a href="https://www.tumblr.com/">Tumblr</a> and <a href="http://wordpress.org/">Wordpress</a> -- are quite good. They offer a low barrier to publishing text on the Internet. Unfortunately they are lacking for technical writing.</p>
+
+<p>Thankfully GitHub has built awesome tools for communicating about code. <a href="https://gist.github.com/">Gist</a> and <a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a> has cornered the market for quickly producing good looking text and code with only a few primitives: headers, hyperlinks and pre-formatted syntax highlighted code blocks.</p>
+
+<p>But for long term publishing there is still another step to then index and host polished content in HTML on the Internet. There are a few established solutions, <a href="https://github.com/mojombo/jekyll">Jekyll</a> and <a href="http://octopress.org/">Octopress</a>, but I've found these to be complicated and confusing. I shouldn't need gems and a web server to put my already polished Markdown on my domain.</p>
+
+<p>So I did what every arrogant programmer does and wrote my own publishing tool: <a href="https://github.com/nzoschke/pages">Pages</a>.</p>
+
+<h2>
+<a name="pages" class="anchor" href="#pages"><span class="mini-icon mini-icon-link"></span></a>Pages</h2>
+
+<p>Pages does the following:</p>
+
+<ul>
+<li>Renders .md files into HTML content with the <a href="http://developer.github.com/v3/markdown/">GitHub Markdown API</a>
+</li>
+<li>Generates .html files with Markdown HTML content inserted into a website template</li>
+<li>Generates an index.html page linking to all .html files</li>
+<li>Includes the GitHub CSS to mimic Gist styling</li>
+<li>Manages the 'gh-pages' branch of static content</li>
+</ul><p>In 60 lines of Ruby code and no dependencies, Pages turns a folder of Markdown into a web site perfectly matching how a Markdown document looks on GitHub. The static files are fit to push to GitHub pages or Heroku.</p>
+
+<p>This strategy encourages hacker workflow for collaboration: posts are added and edited on any browser and textarea or text editor and CLI, edits are revision controlled, work-in-progress lives in branches, and feedback comes as issues and pull requests.</p>
+
+<p>I'm already 100% satisfied with Pages. If this approach interests you, give it a try and we can collaborate on feature enhancements.</p>
+
+<p>-Noah</p></article></div></section>
+
+      <footer>
+        <p><small>Hosted on <a href="http://heroku.com">Heroku</a> and/or <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
